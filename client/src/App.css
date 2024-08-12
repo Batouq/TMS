@@ -1,13 +1,14 @@
 .landingPageContainer {
   display: flex;
   flex-direction: row;
+  height: 100vh;
+}
+.landingPageContent {
+  flex: 3;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
 }
 
 .landingPageColumn {
   flex: 1;
-  background-color: aqua;
-}
-
-.landingPageContent {
-  flex: 3;
 }

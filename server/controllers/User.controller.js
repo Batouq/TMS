@@ -16,12 +16,11 @@ const allUsers = async (req, res, next) => {
 
 const newUser = async (req, res, next) => {
   try {
-    const { name, positionName, projectLead } = req.body;
+    const { name, positionName } = req.body;
 
     await UserSchema.create({
       name: name,
       positionName: positionName,
-      projectLead: projectLead,
     });
 
     res.json({ message: "user created successfully" });

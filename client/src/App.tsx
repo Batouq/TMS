@@ -1,18 +1,20 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home/Index";
-import NotFound from "./pages/NotFound/Index";
+
+import SidePage from "./components/SidePage";
+import MainRoutes from "./Routes/MainRoutes";
+import { Toaster } from "react-hot-toast";
+
 function App() {
   return (
     <div className="landingPageContainer">
-      <div className="landingPageColumn">one</div>
-      <div className="landingPageContent">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <Toaster />
+      <div className="landingPageColumn">
+        <SidePage />
       </div>
-      <div className="landingPageColumn">two</div>
+      <div className="landingPageContent">
+        <MainRoutes />
+      </div>
+      <div className="landingPageColumn"></div>
     </div>
   );
 }

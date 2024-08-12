@@ -1,0 +1,10 @@
+.buttonAction {
+  background-color: #939185;
+  border: none;
+  height: 75px;
+  width: 180px;
+  color: white;
+  font-size: x-large;
+  border-radius: 15px;
+  cursor: pointer;
+}
