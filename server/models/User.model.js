@@ -4,14 +4,24 @@ const User = new mongoose.Schema(
   {
     name: {
       type: String,
-      require: true,
+      required: true,
     },
-    projectManager: { type: Boolean, require: true, default: false },
+    positionName: {
+      type: String,
+      enum: [
+        "FrontEnd Developer",
+        "BackEnd Developer",
+        "Project Lead",
+        "Full Stack Developer",
+        "Manager",
+      ],
+      required: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const UserSchema = mongoose.model("User", User);
+const UserSchema = mongoose.model("user", User);
 module.exports = UserSchema;
