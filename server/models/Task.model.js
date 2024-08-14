@@ -13,7 +13,7 @@ const Task = new mongoose.Schema(
     startDate: { type: Date, required: true },
     status: {
       type: String,
-      enum: ["Not Assigned", "Not Started", "Completed"],
+      enum: ["Not Assigned", "Not Started", "In Progress", "Completed"],
       required: true,
       default: "Not Assigned",
     },

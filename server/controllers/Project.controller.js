@@ -3,7 +3,7 @@ const TaskSchema = require("../models/Task.model");
 
 const allProjects = async (req, res, next) => {
   try {
-    const { _id, position } = req.body;
+    const { userId, position } = req.query;
 
     const pipeline = [
       {
@@ -15,9 +15,36 @@ const allProjects = async (req, res, next) => {
         },
       },
       {
-        $unwind: "$tasks",
+        $unwind: {
+          path: "$tasks",
+          preserveNullAndEmptyArrays: true, // Preserve projects with no tasks
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "projectLead", // Assuming `projectLeadId` is the field in `tasks` referring to users
+          foreignField: "_id",
+          as: "projectLead",
+        },
+      },
+
+      {
+        $unwind: {
+          path: "$projectLead",
+          preserveNullAndEmptyArrays: true, // Preserve tasks with no matching users
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          projectName: { $first: "$projectName" }, // Use $first to get the projectName as it's a constant value within a group
+          projectLead: { $first: "$projectLead" }, // Use $first to get the projectLead, assumes one lead per project
+          tasks: { $push: "$tasks" },
+        },
       },
     ];
+
     const Projects = await ProjectSchema.aggregate(pipeline);
 
     switch (position) {
@@ -30,7 +57,9 @@ const allProjects = async (req, res, next) => {
       case "Project Lead":
         res.json({
           message: "all projects retrieved successfully",
-          docs: Projects.filter((project) => project.projectLead === _id),
+          docs: Projects.filter(
+            (project) => project.projectLead._id.toString() === userId
+          ),
         });
         break;
 
@@ -38,7 +67,9 @@ const allProjects = async (req, res, next) => {
         res.json({
           message: "all projects retrieved successfully",
           docs: Projects.filter((project) =>
-            project.tasks.map((task) => task.assignedDeveloper === _id)
+            project.tasks.some(
+              (task) => task.assignedDeveloper.toString() === userId
+            )
           ),
         });
         break;

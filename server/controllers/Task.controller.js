@@ -8,8 +8,8 @@ const newTask = async (req, res, next) => {
     await TaskSchema.create({
       projectIdRef: projectIdRef,
       assignedDeveloper: assignedDeveloper,
-      dueDate: dueDate,
-      startDate: startDate,
+      dueDate: dueDate || new Date(),
+      startDate: startDate || new Date(),
       status: status,
     });
 

@@ -1,20 +1,17 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Index.css";
 import toast from "react-hot-toast";
 import request from "../../utils/request";
 import { UserContext } from "../../utils/UserProvider.tsx";
-import { User } from "../../types/User.ts";
-
+import { User } from "../../types/types.ts";
+import ActionButton from "../../components/ActionButton.tsx";
 function Index() {
-  const [loading, setLoading] = useState<boolean>(false);
   const [allUsers, setAllUsers] = useState<User[]>();
   const { setUser } = useContext(UserContext);
 
   const getUsers = async () => {
-    setLoading(true);
-    const { data } = await request.get("users");
+    const { data } = await request.get("/users");
     setAllUsers(data.docs);
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -23,15 +20,21 @@ function Index() {
 
   return (
     <div className="userContainer">
-      <div className="userBox">
-        {allUsers?.map((emp) => (
-          <div onClick={() => setUser(emp)}>
-            {emp._id}
-            {emp.name}
-            {emp.positionName}
-          </div>
-        ))}
-      </div>
+      {allUsers?.map((emp) => (
+        <div className="userInfo">
+          <span>ID: {emp._id}</span>
+          <span>User Name: {emp.name}</span>
+          <span>Position: {emp.positionName}</span>
+          <ActionButton
+            title="Select"
+            disabled={false}
+            action={() => {
+              setUser(emp);
+              toast.success(`selected ${emp.name} successfully`);
+            }}
+          />
+        </div>
+      ))}
     </div>
   );
 }

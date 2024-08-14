@@ -15,7 +15,7 @@ const SidePage = () => {
           <span>current user:{user?.positionName}</span>
         </div>
       )}
-      <NavButton title="Home" path="/" />
+      <NavButton title="Project" path="/" />
       <NavButton title="Choose user" path="/users" />
       <NavButton title="Create User" path="/userCreation" />
     </div>

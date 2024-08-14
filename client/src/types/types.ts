@@ -8,3 +8,9 @@ export interface User {
     | "Full Stack Developer"
     | "Manager";
 }
+
+export interface Project {
+  _id?: string;
+  projectName: string;
+  projectLead: User;
+}

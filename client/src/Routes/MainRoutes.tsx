@@ -1,10 +1,11 @@
 import React, { ReactNode, useContext } from "react";
 
 import { Routes, Route, Navigate } from "react-router-dom";
-import Home from "../pages/Home/Index";
+import Project from "../pages/Projects/Index";
 import NotFound from "../pages/NotFound/Index";
 import UserCreation from "../pages/UserCreation/Index";
 import Users from "../pages/Users/Index";
+import ProjectCreation from "../pages/ProjectCreation/Index";
 import { UserContext } from "../utils/UserProvider";
 
 const MainRoutes = () => {
@@ -14,7 +15,15 @@ const MainRoutes = () => {
         path="/"
         element={
           <PrivateRoute>
-            <Home />
+            <Project />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/projectCreation"
+        element={
+          <PrivateRoute>
+            <ProjectCreation />
           </PrivateRoute>
         }
       />

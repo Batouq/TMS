@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useState } from "react";
-import { User } from "../types/User";
+import { User } from "../types/types";
 
 const defaultUserContextValue = {
   user: undefined as User | undefined,
