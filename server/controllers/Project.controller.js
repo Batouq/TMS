@@ -1,5 +1,8 @@
+const mongoose = require("mongoose");
 const ProjectSchema = require("../models/Project.model");
 const TaskSchema = require("../models/Task.model");
+
+const ObjectId = mongoose.Types.ObjectId;
 
 const allProjects = async (req, res, next) => {
   try {
@@ -97,10 +100,10 @@ const newProject = async (req, res, next) => {
 
 const projectDetails = async (req, res, next) => {
   try {
-    const { _id } = req.body;
+    const { _id } = req.query;
 
     const pipeline = [
-      { match: { _id: _id } },
+      { $match: { _id: new ObjectId(_id) } },
       {
         $lookup: {
           from: "tasks",
@@ -110,11 +113,24 @@ const projectDetails = async (req, res, next) => {
         },
       },
       {
-        $unwind: "$tasks",
+        $lookup: {
+          from: "users",
+          localField: "projectLead", // Assuming `projectLeadId` is the field in `tasks` referring to users
+          foreignField: "_id",
+          as: "projectLead",
+        },
+      },
+
+      {
+        $unwind: {
+          path: "$projectLead",
+          preserveNullAndEmptyArrays: true, // Preserve tasks with no matching users
+        },
       },
     ];
 
-    const project = await ProjectSchema.aggregate(pipeline);
+    let project = await ProjectSchema.aggregate(pipeline);
+    project = project[0];
 
     res.json({ message: "user retrieved successfully ", docs: project });
   } catch (error) {

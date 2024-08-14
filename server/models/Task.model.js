@@ -10,6 +10,10 @@ const Task = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
     },
     dueDate: { type: Date, required: true },
+    description: {
+      type: String,
+      required: true,
+    },
     startDate: { type: Date, required: true },
     status: {
       type: String,

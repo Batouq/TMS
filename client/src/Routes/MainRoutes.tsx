@@ -6,6 +6,8 @@ import NotFound from "../pages/NotFound/Index";
 import UserCreation from "../pages/UserCreation/Index";
 import Users from "../pages/Users/Index";
 import ProjectCreation from "../pages/ProjectCreation/Index";
+import ProjectDetails from "../pages/ProjectDetails/Index";
+import TaskCreation from "../pages/TaskCreation/Index";
 import { UserContext } from "../utils/UserProvider";
 
 const MainRoutes = () => {
@@ -16,6 +18,23 @@ const MainRoutes = () => {
         element={
           <PrivateRoute>
             <Project />
+          </PrivateRoute>
+        }
+      />
+      {/* make here new project */}
+      <Route
+        path="/:id"
+        element={
+          <PrivateRoute>
+            <ProjectDetails />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/:id/taskCreate"
+        element={
+          <PrivateRoute>
+            <TaskCreation />
           </PrivateRoute>
         }
       />

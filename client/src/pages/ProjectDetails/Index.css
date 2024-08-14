@@ -1,0 +1,30 @@
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.editButton {
+  width: 100px;
+}
+
+.tasksListContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.taskInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid black;
+  width: 250px;
+  height: 120px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
