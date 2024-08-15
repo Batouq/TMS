@@ -13,7 +13,11 @@ const {
   modifyProject,
 } = require("./controllers/Project.controller");
 
-const { newTask } = require("./controllers/Task.controller");
+const {
+  newTask,
+  editTask,
+  removeTask,
+} = require("./controllers/Task.controller");
 
 const apiRouter = Router();
 
@@ -30,5 +34,7 @@ apiRouter.put("/project", modifyProject);
 
 // apiRouter.get("/tasks");
 apiRouter.post("/task", newTask);
+apiRouter.put("/task", editTask);
+apiRouter.delete("/task", removeTask);
 
 module.exports = apiRouter;

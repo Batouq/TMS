@@ -5,6 +5,7 @@ import Select from "react-select";
 import "./Index.css";
 import toast from "react-hot-toast";
 import NavButton from "../../components/NavButton";
+import { FaTrash } from "react-icons/fa";
 
 function Index() {
   const pathname = window.location.pathname;
@@ -51,7 +52,7 @@ function Index() {
       return toast.error("fill the empty fields");
     }
     await request.put("/project", {
-      _id: details._id,
+      _id: details?._id,
       projectName: projectName,
       projectLead: projectLeadId,
     });
@@ -66,6 +67,28 @@ function Index() {
     getProjectDetails();
     getUsers();
   }, [loading]);
+
+  //   ["Not Assigned", "Not Started", "In Progress", "Completed"];
+
+  const statusOptions = [
+    { label: "Not Assigned", value: "Not Assigned" },
+    { label: "Not Started", value: "Not Started" },
+    { label: "In Progress", value: "In Progress" },
+    { label: "Completed", value: "Completed" },
+  ];
+
+  const statusChange = async (taskId: string, status: string) => {
+    setLoading(true);
+    await request.put("/task", { id: taskId, status: status });
+    toast.success("task updated ");
+    setLoading(false);
+  };
+  const deleteTask = async (taskId: string) => {
+    setLoading(true);
+    await request.delete("/task", { params: { id: taskId } });
+    toast.success("task deleted ");
+    setLoading(false);
+  };
 
   return (
     <div style={{ height: "100%" }}>
@@ -134,7 +157,27 @@ function Index() {
 
       <div className="tasksListContainer">
         {details?.tasks.map((ts) => (
-          <div className="taskInfo">{ts._id}</div>
+          <div className="taskInfo" key={ts._id}>
+            <FaTrash
+              onClick={() => {
+                deleteTask(ts._id);
+              }}
+            />
+            <span>Description: {ts.description}</span>
+            <span>Assigned To: {ts.assignedDeveloper}</span>
+            <span>start date: {ts.startDate.toString()}</span>
+            <span>due date: {ts.dueDate.toString()}</span>
+            <span>
+              status:{" "}
+              <Select
+                options={statusOptions}
+                value={statusOptions.filter((opt) => opt.value === ts.status)}
+                onChange={(e) => {
+                  statusChange(ts._id, e?.value);
+                }}
+              />
+            </span>
+          </div>
         ))}
       </div>
     </div>

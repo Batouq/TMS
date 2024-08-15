@@ -14,7 +14,7 @@ const Index = () => {
   const [dueDate, setDueDate] = useState<string>();
   const [assignedDeveloper, setAssignDeveloper] = useState<string>();
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<string>();
+
   const projectIdRef = window.location.pathname.split("/")[1];
 
   const [developerOptions, setDeveloperOptions] = useState<User[]>();
@@ -52,6 +52,7 @@ const Index = () => {
       description: description,
       dueDate: dueDate,
       startDate: startDate,
+      status: "Not Started",
     });
 
     toast.success("new task created successfully");
