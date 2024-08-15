@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import request from "../../utils/request";
 import { Project, User } from "../../types/types";
 import Select from "react-select";
@@ -6,6 +6,7 @@ import "./Index.css";
 import toast from "react-hot-toast";
 import NavButton from "../../components/NavButton";
 import { FaTrash } from "react-icons/fa";
+import { UserContext } from "../../utils/UserProvider";
 
 function Index() {
   const pathname = window.location.pathname;
@@ -13,6 +14,7 @@ function Index() {
   const [edit, setEdit] = useState<boolean>(false);
   const [leadList, setLeadList] = useState<User[]>();
   const [loading, setLoading] = useState<boolean>(false);
+  const { user } = useContext(UserContext);
 
   const [projectLeadId, setProjectLeadId] = useState<string>("");
   const [projectName, setProjectName] = useState<string>("");
@@ -143,26 +145,35 @@ function Index() {
             </button>
           </>
         ) : (
-          <button
-            className="editButton"
-            onClick={() => {
-              setEdit(!edit);
-            }}
-          >
-            Edit
-          </button>
+          (user?.positionName === "Manager" ||
+            user?.positionName === "Project Lead") && (
+            <button
+              className="editButton"
+              onClick={() => {
+                setEdit(!edit);
+              }}
+            >
+              Edit
+            </button>
+          )
         )}
       </div>
-      <NavButton title="Create Task" path="./taskCreate" />
+      {user?.positionName === "Manager" && (
+        <NavButton title="Create Task" path="./taskCreate" />
+      )}
 
       <div className="tasksListContainer">
         {details?.tasks.map((ts) => (
           <div className="taskInfo" key={ts._id}>
-            <FaTrash
-              onClick={() => {
-                deleteTask(ts._id);
-              }}
-            />
+            {(user?.positionName === "Manager" ||
+              user?.positionName === "Project Lead") && (
+              <FaTrash
+                onClick={() => {
+                  deleteTask(ts._id);
+                }}
+              />
+            )}
+
             <span>Description: {ts.description}</span>
             <span>Assigned To: {ts.assignedDeveloper}</span>
             <span>start date: {ts.startDate.toString()}</span>

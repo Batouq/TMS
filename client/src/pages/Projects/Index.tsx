@@ -27,7 +27,10 @@ const Index = () => {
   }, []);
   return (
     <div className="userContainer">
-      <NavButton title="Create new Project" path="/projectCreation" />
+      {user?.positionName === "Manager" && (
+        <NavButton title="Create new Project" path="/projectCreation" />
+      )}
+
       {projects?.map((project) => (
         <div
           className="userInfo"
